@@ -14,8 +14,8 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.grey.shade300,
-        body: const ShiftScreen(),
+        backgroundColor: Colors.grey.shade100,
+        body: const SafeArea(child: ShiftScreen()),
         bottomNavigationBar: const BulldozerNavbar()
     );
   }
