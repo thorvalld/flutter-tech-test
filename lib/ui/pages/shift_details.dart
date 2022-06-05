@@ -1,15 +1,39 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tech_test/utils/app_strings.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 class ShiftDetails extends StatefulWidget {
-  const ShiftDetails({Key? key}) : super(key: key);
+  final String? company;
+  final String? position;
+  final String? date;
+  final String? hourlyRate;
+  final String? bonusRate;
+  const ShiftDetails({Key? key, this.position, this.date, this.hourlyRate, this.company, this.bonusRate}) : super(key: key);
 
   @override
   State<ShiftDetails> createState() => _ShiftDetailsState();
 }
 
 class _ShiftDetailsState extends State<ShiftDetails> {
+  //Convert String time and date to DateTime object
+  String timestampToReadable(String providedTimestamp) {
+    initializeDateFormatting('fr');
+    DateTime? formatted = DateTime.tryParse(providedTimestamp);
+    String readableDate = DateFormat.MMMMEEEEd('fr').format(formatted!);
+    return readableDate.toUpperCase();
+  }
+
+  //Check if the date given is today, if yes return true
+  bool isToday(String providedTimestamp){
+    final now = DateTime.now();
+    DateTime? formatted = DateTime.tryParse(providedTimestamp);
+    final today = DateTime(now.year, now.month, now.day);
+    final toCheck = DateTime(formatted!.year, formatted.month, formatted.day);
+    return today == toCheck;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,16 +60,17 @@ class _ShiftDetailsState extends State<ShiftDetails> {
               CircleAvatar(
                 radius: 56,
                 backgroundColor: Colors.grey.shade200,
+                foregroundImage: const AssetImage("assets/images/stock.jpg"),
               ),
               const SizedBox(height: 12,),
-              const Text('Lorem Ipsum Dolor Sit.', style: TextStyle(color: Colors.black87, fontSize: 20, fontWeight: FontWeight.w700),),
+              Text('${widget.company}', style: const TextStyle(color: Colors.black87, fontSize: 20, fontWeight: FontWeight.w700),),
               const SizedBox(height: 32,),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16,),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
-                    Text('Today', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),)
+                  children: [
+                    Text(isToday(widget.date!) ? AppStrings.todayStr : timestampToReadable(widget.date!), style: TextStyle(color: isToday(widget.date!) ? Colors.redAccent : Colors.black87, fontWeight: FontWeight.bold),)
                   ],
                 ),
               ),
@@ -58,9 +83,9 @@ class _ShiftDetailsState extends State<ShiftDetails> {
                     Chip(
                         backgroundColor: Colors.grey.shade200,
                         labelPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
-                        label: Text('Work', style: TextStyle(color: Colors.grey.shade600,),)),
+                        label: Text('${widget.position}', style: TextStyle(color: Colors.grey.shade600,),)),
                     const SizedBox(width: 14,),
-                    const Text('14÷\$/H', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),),
+                    Text('${widget.hourlyRate}\$/H', style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),),
                     const Spacer(),
                     const Text('16:00-22:00', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),),
                   ],
@@ -76,7 +101,8 @@ class _ShiftDetailsState extends State<ShiftDetails> {
                       border: Border.all(width: 1, color: Colors.black87, style: BorderStyle.solid)
                     ),
                     child: const Icon(CupertinoIcons.location, color: Colors.black87,)),
-                title: const Text('This is a mockup address, Quebec, QC', style: TextStyle(color: Colors.black87,),),
+                title: const Text('48 Rue sous le Fort, Quebec, QC', style: TextStyle(color: Colors.black87,),),
+                subtitle: const Text('G1K 4G9', style: TextStyle(color: Colors.black87,),),
               ),
               ListTile(
                 onTap: null,
@@ -87,7 +113,7 @@ class _ShiftDetailsState extends State<ShiftDetails> {
                         border: Border.all(width: 1, color: Colors.black87, style: BorderStyle.solid)
                     ),
                     child: const Icon(CupertinoIcons.money_dollar, color: Colors.black87,)),
-                title: const Text('Bonus au travailleur: +3\$/H', style: TextStyle(color: Colors.black87,),),
+                title: Text('Bonus au travailleur: +${widget.bonusRate}\$/H', style: const TextStyle(color: Colors.black87,),),
               ),
               ListTile(
                 onTap: null,
@@ -136,7 +162,7 @@ class _ShiftDetailsState extends State<ShiftDetails> {
                 margin: const EdgeInsets.symmetric(horizontal: 16,),
                 child: Row(
                   children: const [
-                    Text('Gregorie Kovlaks', style: TextStyle(color: Colors.black87, fontSize: 16),),
+                    Text('Gregorie Kovlaks', style: TextStyle(color: Colors.black87, fontSize: 18),),
                   ],
                 ),
               ),

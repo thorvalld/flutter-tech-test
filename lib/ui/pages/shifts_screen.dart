@@ -88,14 +88,20 @@ class _ShiftScreenState extends State<ShiftScreen> {
                           itemBuilder: (context, index){
                             return InkWell(
                                 onTap: (){
-                                  Navigator.push(context, CupertinoPageRoute(builder: (context) => const ShiftDetails()));
+                                  Navigator.push(context, CupertinoPageRoute(builder: (context) => ShiftDetails(
+                                    company: snapshot.data![index]["company"],
+                                    date: snapshot.data![index]["start_at"],
+                                    hourlyRate: snapshot.data![index]["buy_price"],
+                                    bonusRate: snapshot.data![index]["bonus"].toString(),
+                                    position: snapshot.data![index]["post_name"],
+                                  )));
                                 },
                                 child: ShiftCard(
                                   employer: snapshot.data![index]["company"],
                                   startDate: snapshot.data![index]["start_at"],
                                   position: snapshot.data![index]["post_name"],
                                   hourlyRate: snapshot.data![index]["buy_price"],
-                                  startEnd: snapshot.data![index]["- - -"],
+                                  startEnd: "N/A",
                                   bonusRate: snapshot.data![index]["bonus"].toString(),
                                 ));
                           }),

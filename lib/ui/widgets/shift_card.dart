@@ -14,6 +14,24 @@ class ShiftCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    //Convert String time and date to DateTime object
+    String timestampToReadable(String providedTimestamp) {
+      initializeDateFormatting('fr');
+      DateTime? formatted = DateTime.tryParse(providedTimestamp);
+      String readableDate = DateFormat.MMMMEEEEd('fr').format(formatted!);
+      return readableDate.toUpperCase();
+    }
+
+    //Check if the date given is today, if yes return true
+    bool isToday(String providedTimestamp){
+      final now = DateTime.now();
+      DateTime? formatted = DateTime.tryParse(providedTimestamp);
+      final today = DateTime(now.year, now.month, now.day);
+      final toCheck = DateTime(formatted!.year, formatted.month, formatted.day);
+      return today == toCheck;
+    }
+
     return Container(
       width: double.maxFinite,
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 12, top: 22),
@@ -68,19 +86,4 @@ class ShiftCard extends StatelessWidget {
       ),
     );
   }
-  String timestampToReadable(String providedTimestamp) {
-    initializeDateFormatting('fr');
-    DateTime? formatted = DateTime.tryParse(providedTimestamp);
-    String readableDate = DateFormat.MMMMEEEEd('fr').format(formatted!);
-    return readableDate.toUpperCase();
-  }
-
-  bool isToday(String providedTimestamp){
-    final now = DateTime.now();
-    DateTime? formatted = DateTime.tryParse(providedTimestamp);
-    final today = DateTime(now.year, now.month, now.day);
-    final toCheck = DateTime(formatted!.year, formatted.month, formatted.day);
-    return today == toCheck;
-  }
-
 }
