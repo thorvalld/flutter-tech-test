@@ -150,7 +150,7 @@ class _ShiftDetailsState extends State<ShiftDetails> {
         right: false,
         bottom: true,
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16,),
+          margin: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
           child: CupertinoButton(
             onPressed: (){},
             color: Colors.cyan,

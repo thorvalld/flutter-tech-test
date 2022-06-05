@@ -20,11 +20,19 @@ class _BulldozerNavbarState extends State<BulldozerNavbar> {
       bottom: true,
       child: Container(
         height: 64,
-        margin: const EdgeInsets.symmetric(horizontal: 16),
+        margin: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
         padding: const EdgeInsets.all(4),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(64)),
+          borderRadius: const BorderRadius.all(Radius.circular(64)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade200,
+                blurRadius: 6,
+                spreadRadius: 4,
+                offset: const Offset(3, 4), // Shadow position
+              ),
+            ]
         ),
         child: Row(
           children: [

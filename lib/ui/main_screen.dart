@@ -15,8 +15,23 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.grey.shade100,
-        body: const SafeArea(child: ShiftScreen()),
-        bottomNavigationBar: const BulldozerNavbar()
+        body: SafeArea(
+            bottom: false,
+            left: false,
+            right: false,
+            top: true,
+            child: Stack(
+              children: [
+                const ShiftScreen(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    BulldozerNavbar()
+                  ],
+                )
+              ],
+            )),
+        //bottomNavigationBar: const BulldozerNavbar()
     );
   }
 }
