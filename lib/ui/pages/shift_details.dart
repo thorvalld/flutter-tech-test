@@ -136,7 +136,7 @@ class _ShiftDetailsState extends State<ShiftDetails> {
                 margin: const EdgeInsets.symmetric(horizontal: 16,),
                 child: Row(
                   children: const [
-                    Text('Gregorie Kovlaks', style: TextStyle(color: Colors.black87,),),
+                    Text('Gregorie Kovlaks', style: TextStyle(color: Colors.black87, fontSize: 16),),
                   ],
                 ),
               ),

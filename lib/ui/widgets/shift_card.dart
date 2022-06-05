@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tech_test/utils/app_strings.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class ShiftCard extends StatelessWidget {
   final String? employer;
@@ -6,7 +9,8 @@ class ShiftCard extends StatelessWidget {
   final String? position;
   final String? hourlyRate;
   final String? startEnd;
-  const ShiftCard({Key? key, this.employer, this.startDate, this.position, this.hourlyRate, this.startEnd}) : super(key: key);
+  final String? bonusRate;
+  const ShiftCard({Key? key, this.employer, this.startDate, this.position, this.hourlyRate, this.startEnd, this.bonusRate}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class ShiftCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text('$startDate', style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),)
+              Text(isToday(startDate!) ? AppStrings.todayStr : timestampToReadable(startDate!), style: TextStyle(color: isToday(startDate!) ? Colors.redAccent : Colors.blueGrey, fontWeight: FontWeight.bold, fontSize: 12),)
             ],
           ),
           const SizedBox(height: 8,),
@@ -41,16 +45,42 @@ class ShiftCard extends StatelessWidget {
             children: [
               Chip(
                 backgroundColor: Colors.grey.shade200,
-                  labelPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
-                  label: Text('$position', style: TextStyle(color: Colors.grey.shade600,),)),
+                  label: Text('$position', style: TextStyle(color: Colors.grey.shade600, fontSize: 12),)),
               const SizedBox(width: 8,),
-              Text('$hourlyRate', style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),),
+              RichText(
+                text: TextSpan(
+                    text: '$hourlyRate\$/H ',
+                    style: const TextStyle(
+                        color: Colors.black87, fontSize: 12),
+                    children: <TextSpan>[
+                      TextSpan(text: '+ $bonusRate\$/H',
+                          style: const TextStyle(
+                              color: Colors.teal, fontSize: 12),
+                      )
+                    ]
+                ),
+              ),
               const Spacer(),
-              Text('$startEnd', style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),),
+              const Text('16:00-22:00', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 12),),
             ],
           ),
         ],
       ),
     );
   }
+  String timestampToReadable(String providedTimestamp) {
+    initializeDateFormatting('fr');
+    DateTime? formatted = DateTime.tryParse(providedTimestamp);
+    String readableDate = DateFormat.MMMMEEEEd('fr').format(formatted!);
+    return readableDate.toUpperCase();
+  }
+
+  bool isToday(String providedTimestamp){
+    final now = DateTime.now();
+    DateTime? formatted = DateTime.tryParse(providedTimestamp);
+    final today = DateTime(now.year, now.month, now.day);
+    final toCheck = DateTime(formatted!.year, formatted.month, formatted.day);
+    return today == toCheck;
+  }
+
 }
